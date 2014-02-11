@@ -16,21 +16,25 @@ def detect_os_version():
 
 def detect_speed(dev):
     #main: dd if = dev of = dev count = blocks 
-    print >> sys.stdout, dev
-    data = commands.getoutput("".join(["dd if=/dev/", dev, " of=/dev/", dev, " count=1024"])).splitlines()[-1] 
-    print >> sys.stdout, data
-    return 
+    count = 1024
+    data = commands.getoutput("".join(["dd if=/dev/", dev, " of=/dev/", dev, " count=", str(count)])).splitlines()[-1] 
+    return data 
 
 def detect_device():
     devices = []
     if detect_os_version() in ("Redhat", "Ubuntu", "SUSE", "Linux"):
-        data_lines = commands.getoutput("".join(["mount"])).splitlines()
+        mount_fd = file("/proc/mounts", "r")
+        data_lines = mount_fd.readlines()
+        mount_fd.close()
+#        data_lines = commands.getoutput("".join(["mount"])).splitlines()
         for line in data_lines:
 #FIXME:
 #   use regular express instread of substring
-            if "/dev/sd" in line: 
-                devices.append(line.split("/dev/")[1])
-                print >> sys.stdout, devices
+#            if "/dev/sd" in line: 
+#                devices.append(line.split("/dev/")[1])
+#                print >> sys.stdout, devices
+            rx = re.compile("")
+            devices.append(rx.findall(line)[0]) 
     return devices
         
 def go(devices):

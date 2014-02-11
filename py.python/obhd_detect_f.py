@@ -50,6 +50,7 @@ def triger(addr, res_dict):
                 print >> sys.stdout, recv_data
                 res_dict[addr] = recv_data 
                 break
+        sock.close()
     
 #    try:
 #        c_pid = os.fork()
@@ -69,7 +70,7 @@ def triger(addr, res_dict):
         #DEBUG:
 #        print >> sys.stderr, "error when triger the client script"
 #    finally:
-        sock.close()
+#       sock.close()
 
 if "__main__" == __name__:
     time_limit = 100
